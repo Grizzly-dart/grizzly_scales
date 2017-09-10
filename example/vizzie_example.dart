@@ -4,5 +4,5 @@
 import 'package:grizzly_viz_scales/grizzly_viz_scales.dart';
 
 main() {
-  print(binaryRangeSearch([10, 20, 30, 40, 50, 60], 40));
+  print(binaryRangeSearch([10, 20, 30, 40, 50, 60], 90));
 }
