@@ -1,47 +1,48 @@
 part of grizzly.viz.scales.ranger;
 
 class ConstantIterable<T> extends IterableBase<T> {
-	final int length;
+  final int length;
 
-	final T constant;
+  final T constant;
 
-	ConstantIterable(this.constant, [this.length = 10]);
+  ConstantIterable(this.constant, [this.length = 10]);
 
-	Iterator<T> get iterator => new ConstantIterator<T>(constant, length);
+  Iterator<T> get iterator => new ConstantIterator<T>(constant, length);
 
-	bool get isEmpty => length == 0;
+  bool get isEmpty => length == 0;
 
-	int get hashCode {
-		int result = 17;
-		result = 37 * result + constant.hashCode;
-		result = 37 * result + length.hashCode;
-		return result;
-	}
+  int get hashCode {
+    int result = 17;
+    result = 37 * result + constant.hashCode;
+    result = 37 * result + length.hashCode;
+    return result;
+  }
 
-	String toString() => 'ConstantIterable($constant, $length)';
+  String toString() => 'ConstantIterable($constant, $length)';
 
-	bool operator ==(other) => other is ConstantIterable &&
-			constant == other.constant &&
-			length == other.length;
+  bool operator ==(other) =>
+      other is ConstantIterable &&
+      constant == other.constant &&
+      length == other.length;
 }
 
 class ConstantIterator<T> implements Iterator<T> {
-	int _pos = -1;
+  int _pos = -1;
 
-	final int length;
+  final int length;
 
-	final T constant;
+  final T constant;
 
-	ConstantIterator(this.constant, this.length);
+  ConstantIterator(this.constant, this.length);
 
-	T get current => constant;
+  T get current => constant;
 
-	bool moveNext() {
-		_pos++;
-		if(_pos < length) {
-			return true;
-		}
+  bool moveNext() {
+    _pos++;
+    if (_pos < length) {
+      return true;
+    }
 
-		return false;
-	}
+    return false;
+  }
 }

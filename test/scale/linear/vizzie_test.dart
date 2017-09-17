@@ -6,8 +6,7 @@ import 'package:test/test.dart';
 
 void main() {
   group('LinearScale', () {
-    setUp(() {
-    });
+    setUp(() {});
 
     test('scale.bimap', () {
       final s1 = new LinearScale([0, 42], [0, 420]);

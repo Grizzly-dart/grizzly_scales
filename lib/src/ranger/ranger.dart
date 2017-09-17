@@ -11,31 +11,41 @@ part 'time.dart';
 abstract class Ranger {
   static Iterable<T> range<T extends num>(T start, T stop, [T step]) {
     if (start is int) {
-      return new IntRangeIterable(start, stop.toInt(), step?.toInt() ?? 1)
+      return new IntRangeIterable(start, stop as int, step as int ?? 1)
           as Iterable<T>;
-    } else {
+    } else if (start is double) {
       return new DoubleRangeIterable(
-              start.toDouble(), stop.toDouble(), step?.toDouble() ?? 1.0)
-          as Iterable<T>;
+          start, stop as double, step as double ?? 1.0) as Iterable<T>;
     }
+
+    throw new Exception('Unknown type T');
   }
 
   static Iterable<T> rangeUntil<T extends num>(T stop, [T step]) {
     if (stop is int) {
-      return new IntRangeIterable.until(stop, step?.toInt() ?? 1)
+      return new IntRangeIterable.until(stop, step as int ?? 1) as Iterable<T>;
+    } else if (stop is double) {
+      return new DoubleRangeIterable.until(stop, step as double ?? 1.0)
           as Iterable<T>;
-    } else {
-      return new DoubleRangeIterable.until(
-          stop.toDouble(), step?.toDouble() ?? 1.0) as Iterable<T>;
     }
+
+    throw new Exception('Unknown type T');
   }
 
   static Iterable<int> indices(int length) =>
       new IntRangeIterable(0, length - 1);
 
-  static Iterable<double> linspace(double start, double stop,
-          [int count = 50]) =>
-      new DoubleRangeIterable.linspace(start, stop, count);
+  static Iterable<T> linspace<T extends num>(T start, T stop,
+      [int count = 50]) {
+    if (start is int) {
+      return new IntRangeIterable.linspace(start, stop as int, count)
+          as Iterable<T>;
+    } else if (start is double) {
+      new DoubleRangeIterable.linspace(start, stop as double, count);
+    }
+
+    throw new Exception('Unknown type T');
+  }
 
   static Iterable<int> zeros([int length = 10]) =>
       new ConstantIterable(0, length);

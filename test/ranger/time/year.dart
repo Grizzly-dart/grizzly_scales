@@ -7,8 +7,7 @@ void main() {
 
     test('floor', () {
       DateTime date = new DateTime(2017, 9, 9, 1, 2, 3, 4, 5);
-      expect(
-          Ranger.yearsRange.floor(date), new DateTime(2017));
+      expect(Ranger.yearsRange.floor(date), new DateTime(2017));
     });
 
     test('step', () {

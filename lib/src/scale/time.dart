@@ -120,7 +120,6 @@ class TimeScale<RT> extends Scale<DateTime, RT> {
 
       if (diff1 < diff0) {
         ranger = _scaleRangers[index + 1];
-
       }
     }
 

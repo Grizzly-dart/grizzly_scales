@@ -3,8 +3,7 @@ import 'package:test/test.dart';
 
 void main() {
   group('utils', () {
-    setUp(() {
-    });
+    setUp(() {});
 
     test('binaryRangeSearch.evenLen', () {
       final ranges = [10, 20, 30, 40, 50, 60];

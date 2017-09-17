@@ -6,8 +6,7 @@ import 'package:test/test.dart';
 
 void main() {
   group('LinearScale', () {
-    setUp(() {
-    });
+    setUp(() {});
 
     test('Interpolate.number', () {
       final s1 = Interpolate.number(10, 20);
