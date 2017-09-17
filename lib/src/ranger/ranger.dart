@@ -1,16 +1,40 @@
 library grizzly.viz.scales.ranger;
 
 import 'dart:math' as math;
+import 'dart:collection';
 
+part 'constant_iterable.dart';
+part 'double_iterable.dart';
+part 'int_iterable.dart';
 part 'time.dart';
 
 abstract class Ranger {
-  static Iterable<num> range(num start, num stop, [num step = 1]) {
-    final int len = step != 0 ? math.max(0, ((stop - start) / step).ceil()) : 0;
-    final range = new List<num>(len);
-    for (int i = 0; i < len; i++) range[i] = start + i * step;
-    return range;
-  }
+  static Iterable<int> range(int start, int stop, [int step = 1]) =>
+      new IntRangeIterable(start, stop, step);
+
+  static Iterable<int> rangeUntil(int stop, [int step = 1]) =>
+      new IntRangeIterable.until(stop, step);
+
+  static Iterable<int> indices(int length) => new IntRangeIterable(0, length - 1);
+
+  static Iterable<double> linspace(double start, double stop,
+          [int count = 50]) =>
+      new DoubleRangeIterable.linspace(start, stop, count);
+
+  static Iterable<int> zeros([int length = 10]) =>
+      new ConstantIterable(0, length);
+
+  static Iterable<int> ones([int length = 10]) =>
+      new ConstantIterable(1, length);
+
+  static Iterable<int> onesLike(Iterable iterable) =>
+      new ConstantIterable(1, iterable.length);
+
+  static Iterable<T> filled<T>(T value, [int length = 10]) =>
+      new ConstantIterable<T>(value, length);
+
+  static Iterable<T> filledLike<T>(T value, Iterable iterable) =>
+      new ConstantIterable<T>(value, iterable.length);
 
   /// Returns an [Iterable] of approximately `count + 1` uniformly-spaced,
   /// nicely-rounded values between [start] and [stop] (inclusive).

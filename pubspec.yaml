@@ -1,4 +1,4 @@
-name: grizzly_viz_scales
+name: grizzly_scales
 description: Provides scales and interpolators for grizzly_viz
 version: 0.0.2-dev
 homepage:

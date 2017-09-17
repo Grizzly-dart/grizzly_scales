@@ -1,4 +1,4 @@
-import 'package:grizzly_viz_scales/grizzly_viz_scales.dart';
+import 'package:grizzly_scales/grizzly_scales.dart';
 import 'package:test/test.dart';
 
 void main() {

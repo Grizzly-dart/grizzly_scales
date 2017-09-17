@@ -20,6 +20,10 @@ abstract class Scale<DT, RT> {
   Iterable<num> get domain;
 
   Iterable<DT> ticks([int count = 10]);
+
+  //TODO nice
+
+  //TODO clone
 }
 
 LinearScale scaleLinear(List<num> domain, List<num> range) =>
@@ -34,6 +38,26 @@ TimeScale scaleTime<RT>(List<DateTime> domain, List<RT> range,
     new TimeScale<RT>(
         domain.map((date) => date.millisecondsSinceEpoch).toList(), range,
         rangeToNum: rangeToNum);
+
+LogScale<RT> scaleLog<RT>(List<double> domain, List<RT> range,
+    {Numeric<RT> rangeToNum: const IdentityNumeric()}) {
+  return new LogScale<RT>(domain, range, base: math.E, rangeToNum: rangeToNum);
+}
+
+LogScale<RT> scaleLog2<RT>(List<double> domain, List<RT> range,
+    {Numeric<RT> rangeToNum: const IdentityNumeric()}) {
+  return new LogScale<RT>(domain, range, base: 2.0, rangeToNum: rangeToNum);
+}
+
+LogScale<RT> scaleLog10<RT>(List<double> domain, List<RT> range,
+    {Numeric<RT> rangeToNum: const IdentityNumeric()}) {
+  return new LogScale<RT>(domain, range, base: 10.0, rangeToNum: rangeToNum);
+}
+
+LogScale<RT> scaleLogN<RT>(List<double> domain, List<RT> range,
+    {double base: 10.0, Numeric<RT> rangeToNum: const IdentityNumeric()}) {
+  return new LogScale<RT>(domain, range, base: base, rangeToNum: rangeToNum);
+}
 
 int binaryRangeSearch(List<num> list, final num search,
     {int start: 0, int end}) {
