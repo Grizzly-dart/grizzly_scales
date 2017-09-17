@@ -9,13 +9,29 @@ part 'int_iterable.dart';
 part 'time.dart';
 
 abstract class Ranger {
-  static Iterable<int> range(int start, int stop, [int step = 1]) =>
-      new IntRangeIterable(start, stop, step);
+  static Iterable<T> range<T extends num>(T start, T stop, [T step]) {
+    if (start is int) {
+      return new IntRangeIterable(start, stop.toInt(), step?.toInt() ?? 1)
+          as Iterable<T>;
+    } else {
+      return new DoubleRangeIterable(
+              start.toDouble(), stop.toDouble(), step?.toDouble() ?? 1.0)
+          as Iterable<T>;
+    }
+  }
 
-  static Iterable<int> rangeUntil(int stop, [int step = 1]) =>
-      new IntRangeIterable.until(stop, step);
+  static Iterable<T> rangeUntil<T extends num>(T stop, [T step]) {
+    if (stop is int) {
+      return new IntRangeIterable.until(stop, step?.toInt() ?? 1)
+          as Iterable<T>;
+    } else {
+      return new DoubleRangeIterable.until(
+          stop.toDouble(), step?.toDouble() ?? 1.0) as Iterable<T>;
+    }
+  }
 
-  static Iterable<int> indices(int length) => new IntRangeIterable(0, length - 1);
+  static Iterable<int> indices(int length) =>
+      new IntRangeIterable(0, length - 1);
 
   static Iterable<double> linspace(double start, double stop,
           [int count = 50]) =>
