@@ -41,7 +41,8 @@ abstract class Ranger {
       return new IntRangeIterable.linspace(start, stop as int, count)
           as Iterable<T>;
     } else if (start is double) {
-      new DoubleRangeIterable.linspace(start, stop as double, count);
+      return new DoubleRangeIterable.linspace(start, stop as double, count)
+          as Iterable<T>;
     }
 
     throw new Exception('Unknown type T');
