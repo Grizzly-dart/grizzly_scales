@@ -1,11 +1,8 @@
 # Changelog
 
-## 0.0.4
-
-- `Ranger.range` supports double
-
 ## 0.0.3
 
+- `Ranger.range` supports double
 
 ## 0.0.2
 
