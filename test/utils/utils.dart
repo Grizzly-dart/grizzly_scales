@@ -1,10 +1,9 @@
-import 'package:grizzly_viz_scales/grizzly_viz_scales.dart';
+import 'package:grizzly_scales/grizzly_scales.dart';
 import 'package:test/test.dart';
 
 void main() {
   group('utils', () {
-    setUp(() {
-    });
+    setUp(() {});
 
     test('binaryRangeSearch.evenLen', () {
       final ranges = [10, 20, 30, 40, 50, 60];

@@ -1,7 +1,7 @@
 part of grizzly.viz.scales;
 
-class Continuous implements Scale<num, num> {
-  final UnmodifiableListView<num> domain;
+class Continuous<DT extends num> extends Scale<DT, num> {
+  final UnmodifiableListView<DT> domain;
 
   final UnmodifiableListView<num> range;
 
@@ -16,9 +16,9 @@ class Continuous implements Scale<num, num> {
   Polater<num> _inverter;
 
   Continuous(
-      List<num> domain, List<num> range, this.deinterpolate, this.reinterpolate)
+      List<DT> domain, List<num> range, this.deinterpolate, this.reinterpolate)
       : range = new UnmodifiableListView<num>(range.toList()),
-        domain = new UnmodifiableListView<num>(domain.toList()) {
+        domain = new UnmodifiableListView<DT>(domain.toList()) {
     if (this.domain.length != this.range.length)
       throw new Exception('Domain and range must be of same length!');
 
@@ -28,17 +28,25 @@ class Continuous implements Scale<num, num> {
     _scaler = math.min(this.domain.length, this.range.length) > 2
         ? polymap(domain, range, deinterpolate, Interpolate.number)
         : bimap(domain.first, domain.last, range.first, range.last,
-        deinterpolate, Interpolate.number);
+            deinterpolate, Interpolate.number);
 
     _inverter = math.min(this.domain.length, this.range.length) > 2
         ? polymap(range, domain, Deinterpolate.linear, reinterpolate)
         : bimap(range.first, range.last, domain.first, domain.last,
-        Deinterpolate.linear, reinterpolate);
+            Deinterpolate.linear, reinterpolate);
   }
 
   num scale(num x) => _scaler(x);
 
-  num invert(num x) => _inverter(x);
+  DT invert(num x) => _inverter(x);
+
+  Iterable<DT> ticks([int count = 10]) =>
+      Ranger.ticks(domain.first, domain.last, count);
+
+  //TODO adjust precision of the double print out
+  DomainFormatter<num> tickFormatter(int count,
+          {NumFormat format: const NumFormat()}) =>
+      format.format;
 
   static Polater<num> bimap(num d0, num d1, num r0, num r1,
       PolaterBuilder<num> deinterpolater, PolaterBuilder<num> reinterpolater) {
@@ -78,11 +86,17 @@ class Continuous implements Scale<num, num> {
   }
 }
 
-class LinearScale extends Continuous implements Scale<num, num> {
-  LinearScale(List<num> domain, List<num> range)
+class LinearScale<DT extends num> extends Continuous<DT>
+    implements Scale<DT, num> {
+  LinearScale(List<DT> domain, List<num> range)
       : super(domain, range, Deinterpolate.linear, Interpolate.number);
+}
 
-  ticks([int count = 10]) {
-    //TODO
-  }
+// TODO implement formatting
+class NumFormat {
+  const NumFormat();
+
+  //TODO implement formatting
+
+  String format(num v) => v.toString();
 }

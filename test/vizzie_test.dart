@@ -1,16 +1,13 @@
 // Copyright (c) 2017, teja. All rights reserved. Use of this source code
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
-import 'package:grizzly_viz_scales/grizzly_viz_scales.dart';
+import 'package:grizzly_scales/grizzly_scales.dart';
 import 'package:test/test.dart';
 
 void main() {
   group('A group of tests', () {
+    setUp(() {});
 
-    setUp(() {
-    });
-
-    test('First Test', () {
-    });
+    test('First Test', () {});
   });
 }

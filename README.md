@@ -1,19 +1,23 @@
 # vizzie
 
-A library for Dart developers. It is awesome.
+Provides scales and interpolators for grizzly_viz
 
-## Usage
+# TODO
 
-A simple usage example:
+## Scales
 
-    import 'package:vizzie/vizzie.dart';
+- [ ] Log scale
+- [ ] Color
+- [ ] nice
 
-    main() {
-      var awesome = new Awesome();
-    }
+## Interpolators
 
-## Features and bugs
+- [ ] Color
 
-Please file feature requests and bugs at the [issue tracker][tracker].
+## General
 
-[tracker]: http://example.com/issues/replaceme
+- [ ] Ticks
+
+## Examples
+
+- Visualize 
