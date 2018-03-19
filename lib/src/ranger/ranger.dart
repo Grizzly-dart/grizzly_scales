@@ -104,11 +104,11 @@ abstract class Ranger {
     }
   }
 
-  static num tickIncrement(num start, num stop, num count) {
-    final num step = (stop - start) / math.max(0, count);
-    final num power = (math.log(step) / math.LN10).floor();
+  static num tickIncrement(num start, num stop, int count) {
+    final double step = (stop - start) / math.max(0, count);
+    final int power = (math.log(step) / math.LN10).floor();
     final num exp = math.pow(10, power);
-    final num error = step / exp;
+    final double error = step / exp;
 
     if (power >= 0) {
       if (error >= e10)
