@@ -93,13 +93,13 @@ class LogScale<RT> implements Scale<double, RT> {
   }
 
   static double Function(double) makeLog(num base) {
-    if (base == math.E) return math.log;
+    if (base == math.e) return math.log;
     final double d = math.log(base);
     return (num x) => math.log(x) / d;
   }
 
   static double Function(double) makePow(num base) {
-    if (base == math.E) return math.exp;
+    if (base == math.e) return math.exp;
     return (num x) => math.pow(base, x).toDouble();
   }
 }

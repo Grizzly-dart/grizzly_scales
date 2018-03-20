@@ -139,7 +139,7 @@ class MonthsRange extends TimeRange {
         date.millisecond,
         date.microsecond);
 
-    if (ret.month != DateTime.FEBRUARY) {
+    if (ret.month != DateTime.february) {
       if (date.day == 31 && ret.day != 31) {
         ret = ret.subtract(_day);
       }
@@ -148,7 +148,7 @@ class MonthsRange extends TimeRange {
         if (date.day == 29 && ret.day != 29) {
           ret = new DateTime(
             ret.year,
-            DateTime.FEBRUARY,
+            DateTime.february,
             29,
             ret.hour,
             ret.minute,
