@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.6
+
++ Moved `Ranger` to grizzly_primitives
+
 ## 0.0.5
 
 - Dart2 fixes

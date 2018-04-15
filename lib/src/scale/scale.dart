@@ -2,9 +2,9 @@ library grizzly.viz.scales;
 
 import 'dart:math' as math;
 import 'dart:collection';
+import 'package:grizzly_primitives/grizzly_primitives.dart';
 
 import '../interpolate/interpolate.dart';
-import '../ranger/ranger.dart';
 
 part 'continuous.dart';
 part 'log.dart';
