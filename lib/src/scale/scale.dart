@@ -2,9 +2,9 @@ library grizzly.viz.scales;
 
 import 'dart:math' as math;
 import 'dart:collection';
+import 'package:grizzly_primitives/grizzly_primitives.dart';
 
 import '../interpolate/interpolate.dart';
-import '../ranger/ranger.dart';
 
 part 'continuous.dart';
 part 'log.dart';
@@ -41,7 +41,7 @@ TimeScale scaleTime<RT>(List<DateTime> domain, List<RT> range,
 
 LogScale<RT> scaleLog<RT>(List<double> domain, List<RT> range,
     {Numeric<RT> rangeToNum: const IdentityNumeric()}) {
-  return new LogScale<RT>(domain, range, base: math.E, rangeToNum: rangeToNum);
+  return new LogScale<RT>(domain, range, base: math.e, rangeToNum: rangeToNum);
 }
 
 LogScale<RT> scaleLog2<RT>(List<double> domain, List<RT> range,

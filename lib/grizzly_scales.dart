@@ -7,5 +7,4 @@
 library vizzie;
 
 export 'src/interpolate/interpolate.dart';
-export 'src/ranger/ranger.dart';
 export 'src/scale/scale.dart';

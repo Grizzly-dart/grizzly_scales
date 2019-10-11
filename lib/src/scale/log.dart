@@ -1,6 +1,6 @@
 part of grizzly.viz.scales;
 
-typedef _LogFunc = double Function(double);
+typedef double _LogFunc(num d);
 
 class LogScale<RT> implements Scale<double, RT> {
   final Continuous<double> _continuous;
@@ -92,14 +92,14 @@ class LogScale<RT> implements Scale<double, RT> {
     //TODO
   }
 
-  static double Function(double) makeLog(double base) {
-    if (base == math.E) return math.log;
-    final d = math.log(base);
-    return (double x) => math.log(x) / d;
+  static double Function(double) makeLog(num base) {
+    if (base == math.e) return math.log;
+    final double d = math.log(base);
+    return (num x) => math.log(x) / d;
   }
 
-  static double Function(double) makePow(double base) {
-    if (base == math.E) return math.exp;
-    return (double x) => math.pow(base, x).toDouble();
+  static double Function(double) makePow(num base) {
+    if (base == math.e) return math.exp;
+    return (num x) => math.pow(base, x).toDouble();
   }
 }
