@@ -10,6 +10,10 @@ class IdentityNumeric<T> implements Numeric<T> {
   const IdentityNumeric();
 }
 
+typedef DomainFormatter<DT> = String Function(DT);
+
+/*
+
 /// Linear scale that operates on time
 class TimeScale<RT> extends Scale<DateTime, RT> {
   final Continuous<int> _continuous;
@@ -18,14 +22,14 @@ class TimeScale<RT> extends Scale<DateTime, RT> {
 
   TimeScale(List<int> domain, List<RT> range,
       {this.rangeToNum: const IdentityNumeric()})
-      : _continuous = new Continuous(
+      : _continuous = Continuous(
             domain,
-            new List.generate(range.length, (i) => rangeToNum.toNum(range[i])),
+            List.generate(range.length, (i) => rangeToNum.toNum(range[i])),
             Deinterpolate.linear,
             Interpolate.number),
-        domainDates = new UnmodifiableListView(new List.generate(domain.length,
-            (i) => new DateTime.fromMillisecondsSinceEpoch(domain[i]))),
-        rangeRT = new UnmodifiableListView(range);
+        domainDates = UnmodifiableListView(List.generate(domain.length,
+            (i) => DateTime.fromMillisecondsSinceEpoch(domain[i]))),
+        rangeRT = UnmodifiableListView(range);
 
   UnmodifiableListView<int> get domain => _continuous.domain;
 
@@ -38,7 +42,7 @@ class TimeScale<RT> extends Scale<DateTime, RT> {
   RT scale(DateTime x) =>
       rangeToNum.fromNum(_continuous.scale(x.millisecondsSinceEpoch));
 
-  DateTime invert(RT r) => new DateTime.fromMillisecondsSinceEpoch(
+  DateTime invert(RT r) => DateTime.fromMillisecondsSinceEpoch(
       _continuous.invert(rangeToNum.toNum(r)));
 
   RT scaleMs(int ms) => rangeToNum.fromNum(_continuous.scale(ms));
@@ -84,7 +88,7 @@ class TimeScale<RT> extends Scale<DateTime, RT> {
     r[0] = scale(d[0]);
     r[r.length - 1] = scale(d[r.length - 1]);
 
-    return new TimeScale<RT>(d.map((t) => t.millisecondsSinceEpoch), r,
+    return TimeScale<RT>(d.map((t) => t.millisecondsSinceEpoch), r,
         rangeToNum: rangeToNum);
   }
 
@@ -226,26 +230,26 @@ class TimeScale<RT> extends Scale<DateTime, RT> {
   ];
 
   static final _scaleTargets = <int>[
-    new Duration(seconds: 1).inMilliseconds,
-    new Duration(seconds: 5).inMilliseconds,
-    new Duration(seconds: 15).inMilliseconds,
-    new Duration(seconds: 30).inMilliseconds,
-    new Duration(minutes: 1).inMilliseconds,
-    new Duration(minutes: 5).inMilliseconds,
-    new Duration(minutes: 15).inMilliseconds,
-    new Duration(minutes: 30).inMilliseconds,
-    new Duration(hours: 1).inMilliseconds,
-    new Duration(hours: 3).inMilliseconds,
-    new Duration(hours: 6).inMilliseconds,
-    new Duration(hours: 12).inMilliseconds,
-    new Duration(days: 1).inMilliseconds,
-    new Duration(days: 2).inMilliseconds,
-    new Duration(days: 7).inMilliseconds,
-    new Duration(days: 15).inMilliseconds,
-    new Duration(days: 30).inMilliseconds,
-    new Duration(days: 90).inMilliseconds,
-    new Duration(days: 180).inMilliseconds,
-    new Duration(days: 365).inMilliseconds,
+    Duration(seconds: 1).inMilliseconds,
+    Duration(seconds: 5).inMilliseconds,
+    Duration(seconds: 15).inMilliseconds,
+    Duration(seconds: 30).inMilliseconds,
+    Duration(minutes: 1).inMilliseconds,
+    Duration(minutes: 5).inMilliseconds,
+    Duration(minutes: 15).inMilliseconds,
+    Duration(minutes: 30).inMilliseconds,
+    Duration(hours: 1).inMilliseconds,
+    Duration(hours: 3).inMilliseconds,
+    Duration(hours: 6).inMilliseconds,
+    Duration(hours: 12).inMilliseconds,
+    Duration(days: 1).inMilliseconds,
+    Duration(days: 2).inMilliseconds,
+    Duration(days: 7).inMilliseconds,
+    Duration(days: 15).inMilliseconds,
+    Duration(days: 30).inMilliseconds,
+    Duration(days: 90).inMilliseconds,
+    Duration(days: 180).inMilliseconds,
+    Duration(days: 365).inMilliseconds,
   ];
 
   static const List<String> _monthsShort = const <String>[
@@ -263,7 +267,7 @@ class TimeScale<RT> extends Scale<DateTime, RT> {
     'Dec'
   ];
 
-  static final int millisecondsPerYear = new Duration(days: 365).inMilliseconds;
+  static final int millisecondsPerYear = Duration(days: 365).inMilliseconds;
 }
 
-typedef DomainFormatter<DT> = String Function(DT);
+*/

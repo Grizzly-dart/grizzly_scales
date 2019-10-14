@@ -17,13 +17,13 @@ class Continuous<DT extends num> extends Scale<DT, num> {
 
   Continuous(
       List<DT> domain, List<num> range, this.deinterpolate, this.reinterpolate)
-      : range = new UnmodifiableListView<num>(range.toList()),
-        domain = new UnmodifiableListView<DT>(domain.toList()) {
+      : range = UnmodifiableListView<num>(range.toList()),
+        domain = UnmodifiableListView<DT>(domain.toList()) {
     if (this.domain.length != this.range.length)
-      throw new Exception('Domain and range must be of same length!');
+      throw Exception('Domain and range must be of same length!');
 
     if ((this.domain.length < 2) || (this.range.length < 2))
-      throw new Exception('range and domain must have atleast two elements!');
+      throw Exception('range and domain must have atleast two elements!');
 
     _scaler = math.min(this.domain.length, this.range.length) > 2
         ? polymap(domain, range, deinterpolate, Interpolate.number)
@@ -41,7 +41,7 @@ class Continuous<DT extends num> extends Scale<DT, num> {
   DT invert(num x) => _inverter(x);
 
   Iterable<DT> ticks([int count = 10]) =>
-      Ranger.ticks(domain.first, domain.last, count);
+      ranger.ticks(domain.first, domain.last, count);
 
   //TODO adjust precision of the double print out
   DomainFormatter<num> tickFormatter(int count,
@@ -66,12 +66,12 @@ class Continuous<DT extends num> extends Scale<DT, num> {
   static Polater<num> polymap(List<num> domain, List<num> range,
       PolaterBuilder<num> deinterpolater, PolaterBuilder<num> reinterpolater) {
     if (domain.length != range.length)
-      throw new Exception('Domain and range must be of same length!');
+      throw Exception('Domain and range must be of same length!');
 
     final int j = domain.length - 1;
 
-    final d = new List<Polater<num>>.filled(j, null);
-    final r = new List<Polater<num>>.filled(j, null);
+    final d = List<Polater<num>>.filled(j, null);
+    final r = List<Polater<num>>.filled(j, null);
 
     for (int i = 0; i < j; i++) {
       d[i] = deinterpolater(domain[i], domain[i + 1]);

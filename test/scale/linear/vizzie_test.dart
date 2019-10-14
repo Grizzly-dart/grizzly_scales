@@ -9,7 +9,7 @@ void main() {
     setUp(() {});
 
     test('scale.bimap', () {
-      final s1 = new LinearScale([0, 42], [0, 420]);
+      final s1 = LinearScale([0, 42], [0, 420]);
       expect(s1.scale(10), 100);
       expect(s1.scale(52), 520);
 
@@ -18,7 +18,7 @@ void main() {
     });
 
     test('scale.polymap', () {
-      final s1 = new LinearScale([10, 20, 30], [10, 20, 40]);
+      final s1 = LinearScale([10, 20, 30], [10, 20, 40]);
       expect(s1.scale(5), 5);
       expect(s1.scale(15), 15);
       expect(s1.scale(20), 20);

@@ -2,7 +2,7 @@ library grizzly.viz.scales;
 
 import 'dart:math' as math;
 import 'dart:collection';
-import 'package:grizzly_primitives/grizzly_primitives.dart';
+import 'package:grizzly_range/grizzly_range.dart' as ranger;
 
 import '../interpolate/interpolate.dart';
 
@@ -27,36 +27,38 @@ abstract class Scale<DT, RT> {
 }
 
 LinearScale scaleLinear(List<num> domain, List<num> range) =>
-    new LinearScale(domain, range);
+    LinearScale(domain, range);
 
+/*
 TimeScale scaleTimeMs<RT>(List<num> domain, List<RT> range,
         {Numeric<RT> rangeToNum: const IdentityNumeric()}) =>
-    new TimeScale<RT>(domain, range, rangeToNum: rangeToNum);
+    TimeScale<RT>(domain, range, rangeToNum: rangeToNum);
 
 TimeScale scaleTime<RT>(List<DateTime> domain, List<RT> range,
         {Numeric<RT> rangeToNum: const IdentityNumeric()}) =>
-    new TimeScale<RT>(
+    TimeScale<RT>(
         domain.map((date) => date.millisecondsSinceEpoch).toList(), range,
         rangeToNum: rangeToNum);
+ */
 
 LogScale<RT> scaleLog<RT>(List<double> domain, List<RT> range,
     {Numeric<RT> rangeToNum: const IdentityNumeric()}) {
-  return new LogScale<RT>(domain, range, base: math.e, rangeToNum: rangeToNum);
+  return LogScale<RT>(domain, range, base: math.e, rangeToNum: rangeToNum);
 }
 
 LogScale<RT> scaleLog2<RT>(List<double> domain, List<RT> range,
     {Numeric<RT> rangeToNum: const IdentityNumeric()}) {
-  return new LogScale<RT>(domain, range, base: 2.0, rangeToNum: rangeToNum);
+  return LogScale<RT>(domain, range, base: 2.0, rangeToNum: rangeToNum);
 }
 
 LogScale<RT> scaleLog10<RT>(List<double> domain, List<RT> range,
     {Numeric<RT> rangeToNum: const IdentityNumeric()}) {
-  return new LogScale<RT>(domain, range, base: 10.0, rangeToNum: rangeToNum);
+  return LogScale<RT>(domain, range, base: 10.0, rangeToNum: rangeToNum);
 }
 
 LogScale<RT> scaleLogN<RT>(List<double> domain, List<RT> range,
     {double base: 10.0, Numeric<RT> rangeToNum: const IdentityNumeric()}) {
-  return new LogScale<RT>(domain, range, base: base, rangeToNum: rangeToNum);
+  return LogScale<RT>(domain, range, base: base, rangeToNum: rangeToNum);
 }
 
 int binaryRangeSearch(List<num> list, final num search,

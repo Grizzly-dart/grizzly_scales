@@ -15,12 +15,12 @@ class LogScale<RT> implements Scale<double, RT> {
 
   LogScale(List<double> domain, List<RT> range,
       {this.base: 10.0, this.rangeToNum: const IdentityNumeric()})
-      : _continuous = new Continuous(
+      : _continuous = Continuous(
             domain,
-            new List.generate(range.length, (i) => rangeToNum.toNum(range[i])),
+            List.generate(range.length, (i) => rangeToNum.toNum(range[i])),
             Deinterpolate.log,
             Interpolate.log),
-        rangeRT = new UnmodifiableListView(range),
+        rangeRT = UnmodifiableListView(range),
         _log = makeLog(base),
         _pow = makePow(base);
 
@@ -51,7 +51,7 @@ class LogScale<RT> implements Scale<double, RT> {
     double startLog = _log(start);
     double stopLog = _log(stop);
 
-    List<double> ticks = new List<double>();
+    List<double> ticks = List<double>();
 
     if ((base % 1 == 0) && stopLog - startLog < count) {
       startLog = startLog.round() - 1.0;
@@ -78,10 +78,10 @@ class LogScale<RT> implements Scale<double, RT> {
         }
       }
     } else {
-      ticks = Ranger
-          .ticks(startLog, stopLog, math.min(stopLog - startLog, count))
-          .map(_pow)
-          .toList();
+      ticks =
+          ranger.ticks(startLog, stopLog, math.min(stopLog - startLog, count))
+              .map(_pow)
+              .toList();
     }
 
     return isReverse ? ticks.reversed : ticks;
