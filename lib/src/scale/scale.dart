@@ -1,7 +1,7 @@
 library grizzly.viz.scales;
 
 import 'dart:math' as math;
-import 'dart:collection';
+import 'package:grizzly_range/grizzly_range.dart';
 import 'package:grizzly_range/grizzly_range.dart' as ranger;
 
 import '../interpolate/interpolate.dart';
@@ -11,36 +11,22 @@ part 'log.dart';
 part 'time.dart';
 
 abstract class Scale<DT, RT> {
+  Iterable<DT> get domain;
+
+  Iterable<RT> get range;
+
   RT scale(DT t);
 
   DT invert(RT t);
 
-  Iterable<num> get range;
-
-  Iterable<num> get domain;
-
-  Iterable<DT> ticks([int count = 10]);
+  Iterable<DT> ticks({int count = 10});
 
   //TODO nice
 
   //TODO clone
 }
 
-LinearScale scaleLinear(List<num> domain, List<num> range) =>
-    LinearScale(domain, range);
-
 /*
-TimeScale scaleTimeMs<RT>(List<num> domain, List<RT> range,
-        {Numeric<RT> rangeToNum: const IdentityNumeric()}) =>
-    TimeScale<RT>(domain, range, rangeToNum: rangeToNum);
-
-TimeScale scaleTime<RT>(List<DateTime> domain, List<RT> range,
-        {Numeric<RT> rangeToNum: const IdentityNumeric()}) =>
-    TimeScale<RT>(
-        domain.map((date) => date.millisecondsSinceEpoch).toList(), range,
-        rangeToNum: rangeToNum);
- */
-
 LogScale<RT> scaleLog<RT>(List<double> domain, List<RT> range,
     {Numeric<RT> rangeToNum: const IdentityNumeric()}) {
   return LogScale<RT>(domain, range, base: math.e, rangeToNum: rangeToNum);
@@ -60,22 +46,19 @@ LogScale<RT> scaleLogN<RT>(List<double> domain, List<RT> range,
     {double base: 10.0, Numeric<RT> rangeToNum: const IdentityNumeric()}) {
   return LogScale<RT>(domain, range, base: base, rangeToNum: rangeToNum);
 }
+ */
 
-int binaryRangeSearch(List<num> list, final num search,
-    {int start: 0, int end}) {
-  if (end == null) end = list.length;
+/*
+TimeScale scaleTimeMs<RT>(List<num> domain, List<RT> range,
+        {Numeric<RT> rangeToNum: const IdentityNumeric()}) =>
+    TimeScale<RT>(domain, range, rangeToNum: rangeToNum);
 
-  while (start < end) {
-    final int mid = (start + end) ~/ 2;
-    if (mid == start) break;
-    if (list[mid] > search)
-      end = mid;
-    else
-      start = mid;
-  }
-
-  return start;
-}
+TimeScale scaleTime<RT>(List<DateTime> domain, List<RT> range,
+        {Numeric<RT> rangeToNum: const IdentityNumeric()}) =>
+    TimeScale<RT>(
+        domain.map((date) => date.millisecondsSinceEpoch).toList(), range,
+        rangeToNum: rangeToNum);
+ */
 
 /// Converter between `T` and `num`
 abstract class Numeric<T> {
@@ -85,3 +68,15 @@ abstract class Numeric<T> {
   /// Constructs `T` from `num`
   T fromNum(num v);
 }
+
+class IdentityNumeric<T> implements Numeric<T> {
+  /// Converts `T` to `num`
+  num toNum(T v) => v as num;
+
+  /// Constructs `T` from `num`
+  T fromNum(num v) => v as T;
+
+  const IdentityNumeric();
+}
+
+typedef DomainFormatter<DT> = String Function(DT);

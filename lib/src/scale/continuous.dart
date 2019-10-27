@@ -1,102 +1,72 @@
 part of grizzly.viz.scales;
 
+/// Continuous scales map a continuous, quantitative input domain to a continuous
+/// output range.
 class Continuous<DT extends num> extends Scale<DT, num> {
-  final UnmodifiableListView<DT> domain;
+  final Iterable<DT> domain;
 
-  final UnmodifiableListView<num> range;
+  final Iterable<num> range;
 
-  final PolaterBuilder<num> deinterpolate;
+  List<Extent<DT>> _domainExtents;
 
-  final PolaterBuilder<num> reinterpolate;
+  List<Extent<num>> _rangeExtents;
 
-  //TODO final bool clamp;
+  final InterpolatorBuilder<num> interpolator;
 
-  Polater<num> _scaler;
-
-  Polater<num> _inverter;
-
-  Continuous(
-      List<DT> domain, List<num> range, this.deinterpolate, this.reinterpolate)
-      : range = UnmodifiableListView<num>(range.toList()),
-        domain = UnmodifiableListView<DT>(domain.toList()) {
+  Continuous(List<DT> domain, List<num> range, this.interpolator)
+      : range = range.toList(),
+        domain = domain.toList() {
     if (this.domain.length != this.range.length)
       throw Exception('Domain and range must be of same length!');
 
-    if ((this.domain.length < 2) || (this.range.length < 2))
+    if (this.domain.length < 2)
       throw Exception('range and domain must have atleast two elements!');
 
-    _scaler = math.min(this.domain.length, this.range.length) > 2
-        ? polymap(domain, range, deinterpolate, Interpolate.number)
-        : bimap(domain.first, domain.last, range.first, range.last,
-            deinterpolate, Interpolate.number);
-
-    _inverter = math.min(this.domain.length, this.range.length) > 2
-        ? polymap(range, domain, Deinterpolate.linear, reinterpolate)
-        : bimap(range.first, range.last, domain.first, domain.last,
-            Deinterpolate.linear, reinterpolate);
+    _domainExtents = Extent.consecutive(domain);
+    _rangeExtents = Extent.consecutive(range);
   }
 
-  num scale(num x) => _scaler(x);
+  num scale(DT x) {
+    final extentIndex = Extent.search(_domainExtents, x);
+    if (extentIndex == -1) throw ArgumentError('$x out of bounds of domian');
 
-  DT invert(num x) => _inverter(x);
+    Extent<DT> d = _domainExtents[extentIndex];
+    Extent<num> r = _rangeExtents[extentIndex];
 
-  Iterable<DT> ticks([int count = 10]) =>
-      ranger.ticks(domain.first, domain.last, count);
-
-  //TODO adjust precision of the double print out
-  DomainFormatter<num> tickFormatter(int count,
-          {NumFormat format: const NumFormat()}) =>
-      format.format;
-
-  static Polater<num> bimap(num d0, num d1, num r0, num r1,
-      PolaterBuilder<num> deinterpolater, PolaterBuilder<num> reinterpolater) {
-    Polater<num> reinterpolate;
-    Polater<num> deinterpolate;
-    if (d1 < d0) {
-      deinterpolate = deinterpolater(d1, d0);
-      reinterpolate = reinterpolater(r1, r0);
-    } else {
-      deinterpolate = deinterpolater(d0, d1);
-      reinterpolate = reinterpolater(r0, r1);
+    if (d.isDescending) {
+      d = d.inverted;
+      r = r.inverted;
     }
 
-    return (num t) => reinterpolate(deinterpolate(t));
+    return LinearInterpolator(r.lower, r.upper)
+        .interpolate(interpolator(d.lower, d.upper).deinterpolate(x));
   }
 
-  static Polater<num> polymap(List<num> domain, List<num> range,
-      PolaterBuilder<num> deinterpolater, PolaterBuilder<num> reinterpolater) {
-    if (domain.length != range.length)
-      throw Exception('Domain and range must be of same length!');
+  DT invert(num x) {
+    final extentIndex = Extent.search(_rangeExtents, x);
+    if (extentIndex == -1) throw ArgumentError('Out of bounds');
 
-    final int j = domain.length - 1;
+    Extent<DT> d = _domainExtents[extentIndex];
+    Extent<num> r = _rangeExtents[extentIndex];
 
-    final d = List<Polater<num>>.filled(j, null);
-    final r = List<Polater<num>>.filled(j, null);
-
-    for (int i = 0; i < j; i++) {
-      d[i] = deinterpolater(domain[i], domain[i + 1]);
-      r[i] = reinterpolater(range[i], range[i + 1]);
+    if (d.isDescending) {
+      d = d.inverted;
+      r = r.inverted;
     }
 
-    return (num t) {
-      int i = binaryRangeSearch(domain, t);
-      if (i >= j) i = j - 1;
-      return r[i](d[i](t));
-    };
+    final i = LinearInterpolator(r.lower, r.upper).deinterpolate(x);
+    final ret = interpolator(d.lower, d.upper).interpolate(i);
+    return ret;
   }
+
+  Iterable<DT> ticks({int count = 10}) =>
+      ranger.ticks(domain.first, domain.last, count).cast<DT>();
 }
 
+/// Linear scales are a good default choice for continuous quantitative data
+/// because they preserve proportional differences.
 class LinearScale<DT extends num> extends Continuous<DT>
     implements Scale<DT, num> {
   LinearScale(List<DT> domain, List<num> range)
-      : super(domain, range, Deinterpolate.linear, Interpolate.number);
-}
-
-// TODO implement formatting
-class NumFormat {
-  const NumFormat();
-
-  //TODO implement formatting
-
-  String format(num v) => v.toString();
+      : super(domain, range, (a, b) => LinearInterpolator(a, b));
 }

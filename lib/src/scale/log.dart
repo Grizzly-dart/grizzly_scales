@@ -2,10 +2,10 @@ part of grizzly.viz.scales;
 
 typedef double _LogFunc(num d);
 
-class LogScale<RT> implements Scale<double, RT> {
+class LogScale implements Scale<double, num> {
   final Continuous<double> _continuous;
 
-  final Numeric<RT> rangeToNum;
+  final Numeric<double> domainToNum;
 
   final double base;
 
@@ -13,29 +13,23 @@ class LogScale<RT> implements Scale<double, RT> {
 
   final _LogFunc _pow;
 
-  LogScale(List<double> domain, List<RT> range,
-      {this.base: 10.0, this.rangeToNum: const IdentityNumeric()})
-      : _continuous = Continuous(
-            domain,
-            List.generate(range.length, (i) => rangeToNum.toNum(range[i])),
-            Deinterpolate.log,
-            Interpolate.log),
-        rangeRT = UnmodifiableListView(range),
+  LogScale(List<double> domain, List<num> range,
+      {this.base: 10.0, this.domainToNum: const IdentityNumeric()})
+      : _continuous =
+            Continuous(domain, range, (a, b) => LogInterpolator(a, b)),
         _log = makeLog(base),
         _pow = makePow(base);
 
-  UnmodifiableListView<double> get domain => _continuous.domain;
+  Iterable<double> get domain => _continuous.domain;
 
-  final UnmodifiableListView<RT> rangeRT;
+  Iterable<num> get range => _continuous.range;
 
-  UnmodifiableListView<num> get range => _continuous.range;
+  num scale(double x) => _continuous.scale(x);
 
-  RT scale(double x) => rangeToNum.fromNum(x);
+  double invert(num r) => _continuous.invert(r);
 
-  double invert(RT r) => _continuous.invert(rangeToNum.toNum(r));
-
-  Iterable<double> ticks([int count = 10]) {
-    if (count == 0) return <double>[];
+  Iterable<double> ticks({int count = 10}) {
+    if (count <= 0) return <double>[];
 
     num start = domain.first;
     num stop = domain.last;
@@ -51,11 +45,11 @@ class LogScale<RT> implements Scale<double, RT> {
     double startLog = _log(start);
     double stopLog = _log(stop);
 
-    List<double> ticks = List<double>();
+    var ticks = List<double>();
 
     if ((base % 1 == 0) && stopLog - startLog < count) {
-      startLog = startLog.round() - 1.0;
-      stopLog = stopLog.round() + 1.0;
+      startLog = startLog.floorToDouble();
+      stopLog = stopLog.ceilToDouble();
       if (start > 0) {
         for (double c = startLog; c < stopLog; c++) {
           double p = _pow(c);
@@ -64,6 +58,7 @@ class LogScale<RT> implements Scale<double, RT> {
             if (t < start) continue;
             if (t > stop) break;
             ticks.add(t);
+            break;
           }
         }
       } else {
@@ -78,18 +73,13 @@ class LogScale<RT> implements Scale<double, RT> {
         }
       }
     } else {
-      ticks =
-          ranger.ticks(startLog, stopLog, math.min(stopLog - startLog, count))
-              .map(_pow)
-              .toList();
+      ticks = ranger
+          .ticks(startLog, stopLog, math.min(stopLog - startLog, count))
+          .map(_pow)
+          .toList();
     }
 
     return isReverse ? ticks.reversed : ticks;
-  }
-
-  DomainFormatter<double> tickFormatter(int count,
-      {NumFormat format: const NumFormat()}) {
-    //TODO
   }
 
   static double Function(double) makeLog(num base) {
