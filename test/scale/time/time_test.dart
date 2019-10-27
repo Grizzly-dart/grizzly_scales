@@ -6,7 +6,8 @@ void main() {
     setUp(() {});
 
     test('ticks', () {
-      final s1 = TimeScale([DateTime(2000, 1, 1), DateTime(2009, 1, 1)], [0, 9]);
+      final s1 =
+          TimeScale([DateTime(2000, 1, 1), DateTime(2009, 1, 1)], [0, 9]);
       print(s1.ticks());
       /*
       final s1 =
