@@ -14,10 +14,10 @@ class TimeScale extends Scale<DateTime, num> {
         (a, b) => LinearInterpolator(a, b));
   }
 
-  num scale(DateTime x) => _continuous.scale(x.millisecondsSinceEpoch);
+  num scale(DateTime x) => _continuous.scale(x.microsecondsSinceEpoch);
 
   DateTime invert(num r) =>
-      DateTime.fromMillisecondsSinceEpoch(_continuous.invert(r));
+      DateTime.fromMicrosecondsSinceEpoch(_continuous.invert(r));
 
   Iterable<DateTime> ticks({int count = 10}) {
     // TODO nice bounds

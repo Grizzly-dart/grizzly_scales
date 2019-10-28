@@ -28,7 +28,7 @@ class Continuous<DT extends num> extends Scale<DT, num> {
 
   num scale(DT x) {
     final extentIndex = Extent.search(_domainExtents, x);
-    if (extentIndex == -1) throw ArgumentError('$x out of bounds of domian');
+    if (extentIndex == -1) throw ArgumentError('$x out of bounds of domian $domain');
 
     Extent<DT> d = _domainExtents[extentIndex];
     Extent<num> r = _rangeExtents[extentIndex];
