@@ -6,6 +6,8 @@ import 'package:grizzly_range/grizzly_range.dart' as ranger;
 
 import '../interpolate/interpolate.dart';
 
+export 'ordinal/band.dart';
+
 part 'continuous.dart';
 part 'log.dart';
 part 'time.dart';
