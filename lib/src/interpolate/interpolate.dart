@@ -2,34 +2,42 @@ library vizzie.interpolate;
 
 import 'dart:math' as math;
 
-typedef Polater<T> = T Function(T t);
+typedef InterpolatorBuilder<T> = Interpolator<T> Function(T a, T b);
 
-typedef PolaterBuilder<T> = Polater<T> Function(T a, T b);
+abstract class Interpolator<T> {
+  T interpolate(T t);
 
-abstract class Interpolate {
-  static Polater<num> number(num a, num b) {
-    return (num t) => a + ((b - a) * t);
-  }
-
-  static Polater<num> log(num a, num b) {
-    if (a < 0) {
-      return (num t) => -math.pow(-b, t) * math.pow(-a, 1 - t);
-    }
-
-    return (num t) => math.pow(b, t) * math.pow(a, 1 - t);
-  }
+  T deinterpolate(T t);
 }
 
-abstract class Deinterpolate {
-  static Polater<num> linear(num a, num b) =>
-      b != a ? (num t) => (t - a) / (b - a) : (num x) => 0;
+class LinearInterpolator implements Interpolator<num> {
+  final num a;
 
-  static Polater<num> log(num a, num b) {
-    b = math.log(b / a);
-    if (b == 0 || b.isNaN) {
-      return (num n) => b;
-    }
+  final num b;
 
-    return (num x) => math.log(x / a) / b;
+  const LinearInterpolator(this.a, this.b);
+
+  num interpolate(num t) => a + ((b - a) * t);
+
+  num deinterpolate(num t) => b != a ? (t - a) / (b - a) : 0;
+}
+
+class LogInterpolator implements Interpolator<num> {
+  final num a;
+
+  final num b;
+
+  const LogInterpolator(this.a, this.b);
+
+  num interpolate(num t) {
+    if (a < 0) return -math.pow(-b, t) * math.pow(-a, 1 - t);
+    return math.pow(b, t) * math.pow(a, 1 - t);
+  }
+
+  num deinterpolate(num t) {
+    num b = math.log(this.b / a);
+
+    if (b == 0 || b.isNaN) return b;
+    return math.log(t / a) / b;
   }
 }

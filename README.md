@@ -4,6 +4,8 @@ Provides scales and interpolators for grizzly_viz
 
 # TODO
 
++ [ ] Color scale
+
 ## Scales
 
 - [ ] Log scale
