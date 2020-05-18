@@ -1,10 +1,12 @@
-part of grizzly.viz.scales;
+part of grizzly_scales;
 
 class TimeScale extends Scale<DateTime, num> {
   Continuous<int> _continuous;
 
+  @override
   final Iterable<DateTime> domain;
 
+  @override
   final Iterable<num> range;
 
   TimeScale(this.domain, this.range) {
@@ -14,11 +16,14 @@ class TimeScale extends Scale<DateTime, num> {
         (a, b) => LinearInterpolator(a, b));
   }
 
+  @override
   num scale(DateTime x) => _continuous.scale(x.microsecondsSinceEpoch);
 
+  @override
   DateTime invert(num r) =>
       DateTime.fromMicrosecondsSinceEpoch(_continuous.invert(r));
 
+  @override
   Iterable<DateTime> ticks({int count = 10}) {
     // TODO nice bounds
     // TODO nice intervals

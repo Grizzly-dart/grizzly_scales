@@ -6,8 +6,10 @@ import '../scale.dart';
 /// The domain is specified using an array of values and the range is specified
 /// using a 2-element array to define a continuous interval.
 class BandScale<DT> implements Scale<DT, num> {
+  @override
   final Iterable<DT> domain;
 
+  @override
   final Iterable<num> range;
 
   final num padding;
@@ -19,18 +21,22 @@ class BandScale<DT> implements Scale<DT, num> {
   final num align;
 
   BandScale(Iterable<DT> domain, Iterable<num> range,
-      {this.padding = 0, this.margin: 0, this.align: 0, this.paddingAlign: 0.5})
+      {this.padding = 0, this.margin = 0, this.align = 0, this.paddingAlign = 0.5})
       : domain = domain.toList(),
         range = range.toList() {
     if (domain.isEmpty) throw ArgumentError('domain cannot be empty');
-    if (range.length != 2)
+    if (range.length != 2) {
       throw ArgumentError('range must contain exactly 2 items');
-    if (padding < 0 || padding > 1)
+    }
+    if (padding < 0 || padding > 1) {
       throw ArgumentError('padding should be between 0 and 1');
-    if (margin < 0 || margin > 1)
+    }
+    if (margin < 0 || margin > 1) {
       throw ArgumentError('margin should be between 0 and 1');
-    if (align < 0 || align > 1)
+    }
+    if (align < 0 || align > 1) {
       throw ArgumentError('align should be between 0 and 1');
+    }
   }
 
   num get step {
@@ -51,12 +57,14 @@ class BandScale<DT> implements Scale<DT, num> {
         paddingAlign * 2 * padding * step;
   }
 
+  @override
   num scale(DT t) {
     final start = bound(t);
     if (start == null) return null;
     return start + size / 2;
   }
 
+  @override
   DT invert(num t) {
     final extent = Extent(range.first, range.last);
     if (!extent.has(t)) return null;
@@ -69,5 +77,6 @@ class BandScale<DT> implements Scale<DT, num> {
     return (domain as List)[index];
   }
 
+  @override
   Iterable<DT> ticks({int count = 10}) => domain;
 }

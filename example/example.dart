@@ -4,7 +4,7 @@
 import 'package:grizzly_scales/grizzly_scales.dart';
 import 'package:grizzly_range/grizzly_range.dart';
 
-main() {
+void main() {
   // print(binaryRangeSearch([10, 20, 30, 40, 50, 60], 90));
   // print(LinearScale([0, 1000], [0, 100]).ticks(count: 50));
 

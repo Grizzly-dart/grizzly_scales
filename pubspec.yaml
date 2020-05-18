@@ -1,6 +1,6 @@
 name: grizzly_scales
 description: Provides scales and interpolators for grizzly_viz
-version: 2.0.2
+version: 2.0.3
 homepage: https://github.com/Grizzly-dart/grizzly_scales
 author: Ravi Teja Gudapati <tejainece@gmail.com>
 
@@ -12,3 +12,4 @@ dependencies:
 
 dev_dependencies:
   test:
+  pedantic:

@@ -1,4 +1,4 @@
-library grizzly.viz.scales;
+library grizzly_scales;
 
 import 'dart:math' as math;
 import 'package:grizzly_range/grizzly_range.dart';
@@ -73,9 +73,11 @@ abstract class Numeric<T> {
 
 class IdentityNumeric<T> implements Numeric<T> {
   /// Converts `T` to `num`
+  @override
   num toNum(T v) => v as num;
 
   /// Constructs `T` from `num`
+  @override
   T fromNum(num v) => v as T;
 
   const IdentityNumeric();

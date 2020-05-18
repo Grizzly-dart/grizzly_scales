@@ -1,6 +1,6 @@
-part of grizzly.viz.scales;
+part of grizzly_scales;
 
-typedef double _LogFunc(num d);
+typedef _LogFunc = double Function(num d);
 
 class LogScale implements Scale<double, num> {
   final Continuous<double> _continuous;
@@ -14,20 +14,25 @@ class LogScale implements Scale<double, num> {
   final _LogFunc _pow;
 
   LogScale(List<double> domain, List<num> range,
-      {this.base: 10.0, this.domainToNum: const IdentityNumeric()})
+      {this.base = 10.0, this.domainToNum = const IdentityNumeric()})
       : _continuous =
             Continuous(domain, range, (a, b) => LogInterpolator(a, b)),
         _log = makeLog(base),
         _pow = makePow(base);
 
+  @override
   Iterable<double> get domain => _continuous.domain;
 
+  @override
   Iterable<num> get range => _continuous.range;
 
+  @override
   num scale(double x) => _continuous.scale(x);
 
+  @override
   double invert(num r) => _continuous.invert(r);
 
+  @override
   Iterable<double> ticks({int count = 10}) {
     if (count <= 0) return <double>[];
 
@@ -45,7 +50,7 @@ class LogScale implements Scale<double, num> {
     double startLog = _log(start);
     double stopLog = _log(stop);
 
-    var ticks = List<double>();
+    var ticks = <double>[];
 
     if ((base % 1 == 0) && stopLog - startLog < count) {
       startLog = startLog.floorToDouble();

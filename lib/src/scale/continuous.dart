@@ -1,10 +1,12 @@
-part of grizzly.viz.scales;
+part of grizzly_scales;
 
 /// Continuous scales map a continuous, quantitative input domain to a continuous
 /// output range.
 class Continuous<DT extends num> extends Scale<DT, num> {
+  @override
   final Iterable<DT> domain;
 
+  @override
   final Iterable<num> range;
 
   List<Extent<DT>> _domainExtents;
@@ -16,20 +18,24 @@ class Continuous<DT extends num> extends Scale<DT, num> {
   Continuous(List<DT> domain, List<num> range, this.interpolator)
       : range = range.toList(),
         domain = domain.toList() {
-    if (this.domain.length != this.range.length)
+    if (this.domain.length != this.range.length) {
       throw Exception('Domain and range must be of same length!');
+    }
 
-    if (this.domain.length < 2)
+    if (this.domain.length < 2) {
       throw Exception('range and domain must have atleast two elements!');
+    }
 
     _domainExtents = Extent.consecutive(domain);
     _rangeExtents = Extent.consecutive(range);
   }
 
+  @override
   num scale(DT x) {
     final extentIndex = Extent.search(_domainExtents, x);
-    if (extentIndex == -1)
+    if (extentIndex == -1) {
       throw ArgumentError('$x out of bounds of domian $domain');
+    }
 
     Extent<DT> d = _domainExtents[extentIndex];
     Extent<num> r = _rangeExtents[extentIndex];
@@ -43,6 +49,7 @@ class Continuous<DT extends num> extends Scale<DT, num> {
         .interpolate(interpolator(d.lower, d.upper).deinterpolate(x));
   }
 
+  @override
   DT invert(num x) {
     final extentIndex = Extent.search(_rangeExtents, x);
     if (extentIndex == -1) throw ArgumentError('Out of bounds');
@@ -60,6 +67,7 @@ class Continuous<DT extends num> extends Scale<DT, num> {
     return ret;
   }
 
+  @override
   Iterable<DT> ticks({int count = 10}) =>
       ranger.ticks(domain.first, domain.last, count).cast<DT>();
 }
