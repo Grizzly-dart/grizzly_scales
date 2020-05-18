@@ -69,5 +69,5 @@ class BandScale<DT> implements Scale<DT, num> {
     return (domain as List)[index];
   }
 
-  Iterable<DT> ticks({int count}) => domain;
+  Iterable<DT> ticks({int count = 10}) => domain;
 }

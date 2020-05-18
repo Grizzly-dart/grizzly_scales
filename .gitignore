@@ -8,6 +8,6 @@ pubspec.lock
 # Directory created by dartdoc
 doc/api/
 
-grizzly_viz_scales.iml
+*.iml
 .idea
 .dart_tool
